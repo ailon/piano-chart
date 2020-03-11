@@ -1,0 +1,37 @@
+{
+  "name": "piano-chart",
+  "version": "1.0.0",
+  "description": "Display notes on a piano keyboard",
+  "main": "piano-chart.umd.js",
+  "module": "piano-chart.esm.js",
+  "types": "typings/index.d.ts",
+  "author": "Alan Mendelevich",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "rollup --config rollup.config.prod.js",
+    "dev": "rollup --config rollup.config.dev.js -w"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^7.1.1",
+    "@typescript-eslint/eslint-plugin": "^2.23.0",
+    "@typescript-eslint/parser": "^2.23.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "prettier": "^1.19.1",
+    "rollup": "^2.0.3",
+    "rollup-plugin-cpy": "^2.0.1",
+    "rollup-plugin-delete": "^1.2.0",
+    "rollup-plugin-generate-package-json": "^3.2.0",
+    "rollup-plugin-livereload": "^1.0.4",
+    "rollup-plugin-serve": "^1.0.1",
+    "rollup-plugin-static-site": "^0.1.0",
+    "rollup-plugin-terser": "^5.3.0",
+    "rollup-plugin-typescript2": "^0.26.0",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "@svgdotjs/svg.js": "^3.0.16"
+  }
+}
