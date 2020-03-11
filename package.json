@@ -8,6 +8,18 @@
   "author": "Alan Mendelevich",
   "license": "MIT",
   "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ailon/piano-chart"
+  },
+  "keywords": [
+    "music",
+    "piano",
+    "chart",
+    "dataviz",
+    "keyboard",
+    "midi"
+  ],
   "scripts": {
     "build": "rollup --config rollup.config.prod.js",
     "dev": "rollup --config rollup.config.dev.js -w"
