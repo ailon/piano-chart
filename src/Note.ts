@@ -39,4 +39,76 @@ export class NoteValue implements INoteValue {
       this.octave = note.octave;
     }
   }
+
+  public get baseNote(): INoteValue {
+    const baseNotes: INoteValue[] = [
+      { note: "C" },
+      { note: "C", accidental: "#" },
+      { note: "D" },
+      { note: "D", accidental: "#" },
+      { note: "E" },
+      { note: "F" },
+      { note: "F", accidental: "#" },
+      { note: "G" },
+      { note: "G", accidental: "#" },
+      { note: "A" },
+      { note: "A", accidental: "#" },
+      { note: "B" }
+    ];
+
+    let baseNoteIndex = baseNotes.findIndex(bn => {
+      return (
+        bn.note === this.note
+        && bn.accidental === this.accidental
+      )
+    });
+
+    let result: INoteValue;
+    if (baseNoteIndex > -1) {
+      result = {
+        note: baseNotes[baseNoteIndex].note,
+        accidental: baseNotes[baseNoteIndex].accidental,
+        octave: this.octave
+      } ;
+    } else {
+      baseNoteIndex = baseNotes.findIndex(bn => { 
+        return bn.note === this.note && bn.accidental === undefined 
+      });
+      switch (this.accidental) {
+        case "#": {
+          baseNoteIndex += 1;
+          break;
+        }
+        case "##": {
+          baseNoteIndex += 2;
+          break;
+        }
+        case "b": {
+          baseNoteIndex -= 1;
+          break;
+        }
+        case "bb": {
+          baseNoteIndex -= 2;
+          break;
+        }
+      }
+
+      let octaveMod = 0;
+      if (baseNoteIndex < 0) {
+        baseNoteIndex += 12;
+        octaveMod = -1;
+      } else if (baseNoteIndex > 11) {
+        baseNoteIndex -= 12;
+        octaveMod = 1;
+      }
+
+      result = {
+        note: baseNotes[baseNoteIndex].note,
+        accidental: baseNotes[baseNoteIndex].accidental,
+        octave: this.octave !== undefined ? this.octave + octaveMod : undefined
+      } ;
+    }
+
+    return result;
+  }
 }

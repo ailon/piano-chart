@@ -1,7 +1,7 @@
 import { Key } from './Key';
 import { G, SVG } from '@svgdotjs/svg.js';
 import { PianoData } from './PianoData';
-import { Note, INoteValue } from "./Note";
+import { Note, INoteValue, NoteValue } from "./Note";
 import { WhiteKey } from './WhiteKey';
 import { KeyEventHandler } from './PianoElement';
 import { InstrumentSettings } from './InstrumentSettings';
@@ -12,7 +12,7 @@ export class BlackKey extends Key {
     return this._baseWhiteKey;
   }
 
-  constructor(container: G, instrumentSettings: InstrumentSettings, onKeyPress: KeyEventHandler, onKeyRelease: KeyEventHandler, note: INoteValue, baseWhiteKey: WhiteKey, width: number) {
+  constructor(container: G, instrumentSettings: InstrumentSettings, onKeyPress: KeyEventHandler, onKeyRelease: KeyEventHandler, note: NoteValue, baseWhiteKey: WhiteKey, width: number) {
     super(container, instrumentSettings, onKeyPress, onKeyRelease, width, width * PianoData.BLACK_KEY_RATIO, note);
     this._baseWhiteKey = baseWhiteKey;
   }
@@ -33,7 +33,7 @@ export class BlackKey extends Key {
     this.layout();
   }
 
-  public press() {
+  public press(displayNote: INoteValue) {
     var gradient = this.container.gradient('linear', function(add) {
       add.stop(0, '#000')
       add.stop(1, '#555')
@@ -41,7 +41,7 @@ export class BlackKey extends Key {
     gradient.attr({ x1: 0, y1: 0, x2: 0, y2: 1});
 
     if (!this.isPressed) {
-      super.press();
+      super.press(displayNote);
 
       this._visual?.fill(gradient);
     }

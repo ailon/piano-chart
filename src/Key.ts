@@ -1,13 +1,14 @@
 import { G, Rect, Text, Circle } from '@svgdotjs/svg.js';
 import { PianoElement, KeyEventHandler } from './PianoElement';
-import { INoteValue } from './Note';
+import { INoteValue, NoteValue } from './Note';
 import { InstrumentSettings } from './InstrumentSettings';
 
 export class Key extends PianoElement {
-  private _note: INoteValue;
+  private _note: NoteValue;
   public get note() {
     return this._note;
   }
+  private displayNote: INoteValue;
 
   protected _visual?: Rect;
 
@@ -22,7 +23,7 @@ export class Key extends PianoElement {
 
   protected isPressed = false;
   protected get isHighlighted(): boolean {
-    const thisNote = this.note;
+    const thisNote = this.note.baseNote !== undefined ? this.note.baseNote : this.note;
     return this.instrumentSettings.highlightedNotes.findIndex(highlightedNote => {
       return (
         highlightedNote.note === thisNote.note
@@ -32,12 +33,13 @@ export class Key extends PianoElement {
     }) > -1 || this.isSpecialHighlighted;
   }
   protected get isSpecialHighlighted(): boolean {
-    const thisNote = this.note;
+    const thisNote = this.note.baseNote !== undefined ? this.note.baseNote : this.note;
     return this.instrumentSettings.specialHighlightedNotes.findIndex(highlightedNote => {
+      const hBaseNote = highlightedNote.baseNote !== undefined ? highlightedNote.baseNote : highlightedNote;
       return (
-        highlightedNote.note === thisNote.note
-        && highlightedNote.accidental === thisNote.accidental
-        && (highlightedNote.octave === thisNote.octave || highlightedNote.octave === undefined)
+        hBaseNote.note === thisNote.note
+        && hBaseNote.accidental === thisNote.accidental
+        && (hBaseNote.octave === thisNote.octave || hBaseNote.octave === undefined)
       );
     }) > -1;
   }
@@ -49,7 +51,7 @@ export class Key extends PianoElement {
     onKeyRelease: KeyEventHandler, 
     width: number, 
     height: number, 
-    note: INoteValue
+    note: NoteValue
   ) {
     super(container, instrumentSettings, onKeyPress, onKeyRelease);
     
@@ -57,6 +59,7 @@ export class Key extends PianoElement {
     this.height = height;
 
     this._note = note;
+    this.displayNote = note;
   }
 
   protected addMouseListeners() {
@@ -74,9 +77,11 @@ export class Key extends PianoElement {
     }
   }
 
-  public press() {
+  public press(displayNote: INoteValue) {
     this.isPressed = true;
+    this.displayNote = displayNote;
     if (this._label && this.instrumentSettings.showNoteNames === "onpress") {
+      this.updateLabel();
       this._label.show();
     }
   }
@@ -95,7 +100,7 @@ export class Key extends PianoElement {
   protected createLabel(color: string) {
     this._label = this.container.group();
     this._labelText = this._label
-      .text(`${this.note.note}${this.note.accidental ? this.note.accidental : ""}`)
+      .text(`${this.displayNote.note}${this.displayNote.accidental ? this.displayNote.accidental : ""}`)
       .fill(color)
       .font({
         family:   'Helvetica',
@@ -107,6 +112,13 @@ export class Key extends PianoElement {
     this.layout();
     if (this.instrumentSettings.showNoteNames !== "always") {
       this._label.hide();
+    }
+  }
+
+  protected updateLabel() {
+    if (this._labelText) {
+      this._labelText.text(`${this.displayNote.note}${this.displayNote.accidental ? this.displayNote.accidental : ""}`)
+      this.layout();
     }
   }
 

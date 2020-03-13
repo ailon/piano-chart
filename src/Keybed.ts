@@ -1,5 +1,5 @@
 import { G } from '@svgdotjs/svg.js';
-import { Note, INoteValue } from "./Note";
+import { Note, INoteValue, NoteValue } from "./Note";
 import { PianoData } from './PianoData';
 import { Octave } from './Octave';
 import { PianoElement, KeyEventHandler } from './PianoElement';
@@ -88,7 +88,8 @@ export class Keybed extends PianoElement {
     if (this.octaves.length > 0 
       && note.octave !== undefined 
     ) {
-      const noteOctave = this.octaves.find(o => o.octave === note.octave);
+      const noteObject = new NoteValue(note);
+      const noteOctave = this.octaves.find(o => o.octave === noteObject.baseNote.octave);
       if (noteOctave) {
         noteOctave.keyDown(note);
       }

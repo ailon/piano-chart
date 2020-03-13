@@ -1,4 +1,4 @@
-import { Note, INoteValue } from "./Note";
+import { Note, INoteValue, NoteValue } from "./Note";
 import { G, Text } from '@svgdotjs/svg.js';
 import { PianoData } from './PianoData';
 import { WhiteKey } from './WhiteKey';
@@ -59,7 +59,7 @@ export class Octave extends PianoElement {
         this.instrumentSettings, 
         this.onKeyPress, 
         this.onKeyRelease, 
-        { note: note, octave: this._octave }, 
+        new NoteValue({ note: note, octave: this._octave }), 
         this.whiteKeyWidth
       );
       wk.create();
@@ -78,7 +78,7 @@ export class Octave extends PianoElement {
           this.instrumentSettings,
           this.onKeyPress,
           this.onKeyRelease,
-          { note: note, accidental: "#", octave: this._octave }, 
+          new NoteValue({ note: note, accidental: "#", octave: this._octave }), 
           wk,
           this.whiteKeyWidth / PianoData.WHITE_BLACK_WIDTH_RATIO
         );
@@ -127,26 +127,30 @@ export class Octave extends PianoElement {
   }
 
   public keyDown(note: INoteValue) {
-    if (note.accidental === undefined) {
-      const key = this.whiteKeys.find(wk => wk.note.note === note.note);
+    const noteObject = new NoteValue(note);
+    const baseNote = noteObject.baseNote;
+    if (baseNote.accidental === undefined) {
+      const key = this.whiteKeys.find(wk => wk.note.note === baseNote.note);
       if (key) {
-        key.press();
+        key.press(note);
       }
-    } else if (note.accidental === "#") {
-      const key = this.blackKeys.find(bk => bk.note.note === note.note);
+    } else if (baseNote.accidental === "#") {
+      const key = this.blackKeys.find(bk => bk.note.note === baseNote.note);
       if (key) {
-        key.press();
+        key.press(note);
       }
     }
   }
   public keyUp(note: INoteValue) {
-    if (note.accidental === undefined) {
-      const key = this.whiteKeys.find(wk => wk.note.note === note.note);
+    const noteObject = new NoteValue(note);
+    const baseNote = noteObject.baseNote;
+    if (baseNote.accidental === undefined) {
+      const key = this.whiteKeys.find(wk => wk.note.note === baseNote.note);
       if (key) {
         key.release();
       }
-    } else if (note.accidental === "#") {
-      const key = this.blackKeys.find(bk => bk.note.note === note.note);
+    } else if (baseNote.accidental === "#") {
+      const key = this.blackKeys.find(bk => bk.note.note === baseNote.note);
       if (key) {
         key.release();
       }

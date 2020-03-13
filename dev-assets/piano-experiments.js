@@ -1,5 +1,6 @@
+let piano;
 document.addEventListener("DOMContentLoaded", function () {
-  let piano = new pianoChart.Instrument(document.getElementById('pianoContainer'),
+  piano = new pianoChart.Instrument(document.getElementById('pianoContainer'),
   {
     //showNoteNames: "onhighlight",
     startOctave: 3,
@@ -10,6 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   piano.create();
   piano.keyDown("D4");
-  piano.keyDown("F#4");
+  piano.keyDown("Gb4");
   piano.keyDown("A4");
 });
