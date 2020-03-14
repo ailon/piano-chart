@@ -81,7 +81,12 @@ export class Keybed extends PianoElement {
   }
 
   public get whiteKeyWidth() {
-    return this.availableWidth / this.numberOfWhiteKeys;
+    const fullWidth = this.availableWidth / this.numberOfWhiteKeys
+    if (fullWidth * PianoData.WHITE_KEY_RATIO <= this.availableHeight) {
+      return fullWidth;
+    } else {
+      return this.availableHeight / PianoData.WHITE_KEY_RATIO;
+    }
   }
 
   public keyDown(note: INoteValue) {

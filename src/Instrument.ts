@@ -121,7 +121,7 @@ export class Instrument {
       
       this.keybed.layout(
         this.container.clientWidth,
-        this.container.clientWidth
+        this.container.clientHeight
       );
 
       this.img
