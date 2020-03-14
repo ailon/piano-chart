@@ -5,8 +5,8 @@ document.addEventListener("DOMContentLoaded", function () {
     //showNoteNames: "onhighlight",
     startOctave: 3,
     endOctave: 5,
-    highlightedNotes: ["D", "E", "F#", "G", "A", "B", "C#"],
-    specialHighlightedNotes: [{ note: "D" }],
+    highlightedNotes: ["D", "E", "F#", "G", "Ab", "B", "C#"],
+    specialHighlightedNotes: [{ note: "D", accidental: 'bb' }],
     // showOctaveNumbers: true
   });
   piano.create();

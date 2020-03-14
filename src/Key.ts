@@ -25,10 +25,11 @@ export class Key extends PianoElement {
   protected get isHighlighted(): boolean {
     const thisNote = this.note.baseNote !== undefined ? this.note.baseNote : this.note;
     return this.instrumentSettings.highlightedNotes.findIndex(highlightedNote => {
+      const hBaseNote = highlightedNote.baseNote !== undefined ? highlightedNote.baseNote : highlightedNote;
       return (
-        highlightedNote.note === thisNote.note
-        && highlightedNote.accidental === thisNote.accidental
-        && (highlightedNote.octave === thisNote.octave || highlightedNote.octave === undefined)
+        hBaseNote.note === thisNote.note
+        && hBaseNote.accidental === thisNote.accidental
+        && (hBaseNote.octave === thisNote.octave || hBaseNote.octave === undefined)
       );
     }) > -1 || this.isSpecialHighlighted;
   }
