@@ -27,26 +27,37 @@ export class InstrumentSettings {
   public specialHighlightColor: string = "#f00";
   public showOctaveNumbers: boolean = false;
 
+  private _reloadNeeded = false;
+  public get reloadNeded(): boolean {
+    return this._reloadNeeded;
+  }
+
   constructor(settings?: IInstrumentSettings) {
     this.applySettings(settings);
   }
 
   public applySettings(settings?: IInstrumentSettings) {
+    this._reloadNeeded = false;
     if (settings !== undefined) {
       if (settings.startOctave !== undefined) {
         this.startOctave = settings.startOctave;
+        this._reloadNeeded = true;
       }
       if (settings.startNote !== undefined) {
         this.startNote = settings.startNote;
+        this._reloadNeeded = true;
       }
       if (settings.endOctave !== undefined) {
         this.endOctave = settings.endOctave;
+        this._reloadNeeded = true;
       }
       if (settings.endNote !== undefined) {
         this.endNote = settings.endNote;
+        this._reloadNeeded = true;
       }
       if (settings.showNoteNames !== undefined) {
         this.showNoteNames = settings.showNoteNames;
+        this._reloadNeeded = true;
       }
       if (settings.highlightedNotes !== undefined) {
         this.highlightedNotes.splice(0);

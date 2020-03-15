@@ -32,6 +32,7 @@ export class Instrument {
     this.handleMouseKeyDown = this.handleMouseKeyDown.bind(this);
     this.handleMouseKeyUp = this.handleMouseKeyUp.bind(this);
     this.handleResize = this.handleResize.bind(this);
+    this.reload = this.reload.bind(this);
   }
 
   public create() {
@@ -53,6 +54,7 @@ export class Instrument {
   }
 
   public destroy() {
+    this.container.removeChild(this.img.node);
     window.removeEventListener("resize", this.handleResize);
   }
 
@@ -95,12 +97,21 @@ export class Instrument {
     }
   }
 
+  public reload() {
+    this.destroy();
+    this.create();
+  }
+
   public applySettings(settings: IInstrumentSettings) {
     this.settings.applySettings(settings);
-    if (this.keybed) {
-      this.keybed.setInstrumentSettings(this.settings);
+    if (this.settings.reloadNeded) {
+      this.reload();
+    } else {
+      if (this.keybed) {
+        this.keybed.setInstrumentSettings(this.settings);
+      }
+      this.layout();
     }
-    this.layout();
   }
 
   private resizeCounter = 0;

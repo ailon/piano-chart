@@ -10,6 +10,9 @@
 <body>
   <div id="pianoContainer" style="height: 500px; background-color: blue; display: flex; justify-content: center;">
   </div>
+  Press key:
   <input type="text" onblur="piano.keyDown(event.target.value)" />
+  Set start octave:
+  <input type="text" onblur="piano.applySettings({ startOctave: event.target.value })" />
 </body>
 </html>
