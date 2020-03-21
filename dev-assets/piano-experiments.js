@@ -2,7 +2,7 @@ let piano;
 document.addEventListener("DOMContentLoaded", function () {
   piano = new pianoChart.Instrument(document.getElementById('pianoContainer'),
   {
-    //showNoteNames: "onhighlight",
+    showNoteNames: "onhighlight",
     startOctave: 3,
     endOctave: 5,
     highlightedNotes: ["D", "E", "F#", "G", "Ab", "B", "C#"],

@@ -8,7 +8,14 @@ export class Key extends PianoElement {
   public get note() {
     return this._note;
   }
-  private displayNote: INoteValue;
+  private _displayNote: INoteValue;
+  private get displayNote(): INoteValue {
+    if (this.isHighlighted) {
+      return this.getNoteIfHighlighted([...this.instrumentSettings.highlightedNotes, ...this.instrumentSettings.specialHighlightedNotes]);
+    } else {
+      return this._displayNote;
+    }
+  }
 
   protected _visual?: Rect;
 
@@ -23,26 +30,10 @@ export class Key extends PianoElement {
 
   protected isPressed = false;
   protected get isHighlighted(): boolean {
-    const thisNote = this.note.baseNote !== undefined ? this.note.baseNote : this.note;
-    return this.instrumentSettings.highlightedNotes.findIndex(highlightedNote => {
-      const hBaseNote = highlightedNote.baseNote !== undefined ? highlightedNote.baseNote : highlightedNote;
-      return (
-        hBaseNote.note === thisNote.note
-        && hBaseNote.accidental === thisNote.accidental
-        && (hBaseNote.octave === thisNote.octave || hBaseNote.octave === undefined)
-      );
-    }) > -1 || this.isSpecialHighlighted;
+    return this.getNoteIfHighlighted(this.instrumentSettings.highlightedNotes) !== undefined || this.isSpecialHighlighted;
   }
   protected get isSpecialHighlighted(): boolean {
-    const thisNote = this.note.baseNote !== undefined ? this.note.baseNote : this.note;
-    return this.instrumentSettings.specialHighlightedNotes.findIndex(highlightedNote => {
-      const hBaseNote = highlightedNote.baseNote !== undefined ? highlightedNote.baseNote : highlightedNote;
-      return (
-        hBaseNote.note === thisNote.note
-        && hBaseNote.accidental === thisNote.accidental
-        && (hBaseNote.octave === thisNote.octave || hBaseNote.octave === undefined)
-      );
-    }) > -1;
+    return this.getNoteIfHighlighted(this.instrumentSettings.specialHighlightedNotes) !== undefined;
   }
 
   constructor(
@@ -60,7 +51,7 @@ export class Key extends PianoElement {
     this.height = height;
 
     this._note = note;
-    this.displayNote = note;
+    this._displayNote = note;
   }
 
   protected addMouseListeners() {
@@ -80,7 +71,7 @@ export class Key extends PianoElement {
 
   public press(displayNote: INoteValue) {
     this.isPressed = true;
-    this.displayNote = displayNote;
+    this._displayNote = displayNote;
     if (this._label && this.instrumentSettings.showNoteNames === "onpress") {
       this.updateLabel();
       this._label.show();
@@ -181,4 +172,17 @@ export class Key extends PianoElement {
       }
     }
   }
+
+  private getNoteIfHighlighted(highlightedNotes: NoteValue[]): NoteValue | undefined {
+    const thisNote = this.note.baseNote !== undefined ? this.note.baseNote : this.note;
+    return highlightedNotes.find(highlightedNote => {
+      const hBaseNote = highlightedNote.baseNote !== undefined ? highlightedNote.baseNote : highlightedNote;
+      return (
+        hBaseNote.note === thisNote.note
+        && hBaseNote.accidental === thisNote.accidental
+        && (hBaseNote.octave === thisNote.octave || hBaseNote.octave === undefined)
+      );
+    });
+  }
+
 }
