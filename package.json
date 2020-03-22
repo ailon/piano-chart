@@ -1,6 +1,6 @@
 {
   "name": "piano-chart",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Display notes on a piano keyboard",
   "main": "piano-chart.umd.js",
   "module": "piano-chart.esm.js",
