@@ -38,6 +38,8 @@ export class NoteValue implements INoteValue {
       this.accidental = note.accidental;
       this.octave = note.octave;
     }
+
+    this.toString = this.toString.bind(this);
   }
 
   public get baseNote(): INoteValue {
@@ -109,6 +111,17 @@ export class NoteValue implements INoteValue {
       } ;
     }
 
+    return result;
+  }
+
+  public toString(): string {
+    let result = this.note.toString();
+    if (this.accidental !== undefined) {
+      result += this.accidental.toString();
+    }
+    if (this.octave !== undefined) {
+      result += this.octave.toString();
+    }
     return result;
   }
 }
