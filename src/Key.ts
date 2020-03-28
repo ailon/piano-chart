@@ -52,20 +52,31 @@ export class Key extends PianoElement {
 
     this._note = note;
     this._displayNote = note;
+
+    this.addMouseListeners = this.addMouseListeners.bind(this);
+    this.handleInputDown = this.handleInputDown.bind(this);
+    this.handleInputUp = this.handleInputUp.bind(this);
   }
 
   protected addMouseListeners() {
     if (this._visual !== undefined) {
-      this._visual.on('mousedown', () => { 
-        if (this.onKeyPress !== undefined) {
-          this.onKeyPress(this.note);
-        }
-       });
-      this._visual.on('mouseup', () => { 
-        if (this.onKeyRelease !== undefined) {
-          this.onKeyRelease(this.note);
-        }
-       });
+      this._visual.on('mousedown', this.handleInputDown);
+      this._visual.on('mouseup', this.handleInputUp);
+
+      this._visual.on('touchstart', this.handleInputDown);
+      this._visual.on('touchend', this.handleInputUp);
+    }
+  }
+
+  private handleInputDown() {
+    if (this.onKeyPress !== undefined) {
+      this.onKeyPress(this.note);
+    }
+  }
+
+  private handleInputUp() {
+    if (this.onKeyRelease !== undefined) {
+      this.onKeyRelease(this.note);
     }
   }
 

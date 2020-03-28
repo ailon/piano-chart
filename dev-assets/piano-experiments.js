@@ -13,4 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
   piano.keyDown("D4");
   piano.keyDown("Gb4");
   piano.keyDown("A4");
+
+  piano.addKeyMouseDownListener((note) => { piano.keyDown(note) });
+  piano.addKeyMouseUpListener((note) => { piano.keyUp(note) });
 });
