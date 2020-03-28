@@ -37,6 +37,12 @@ export class Instrument {
 
   public create() {
     this.img = SVG().addTo(this.container).size("100%", "100%");
+
+    // disable text selection
+    this.img.css('-ms-user-select', 'none');
+    this.img.css('-webkit-user-select', 'none');
+    this.img.css('-moz-user-select', 'none');
+    this.img.css('user-select', 'none');
     
     this.keybed = new Keybed(
       this.img.group(), 
