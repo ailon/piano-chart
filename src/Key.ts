@@ -1,6 +1,6 @@
 import { G, Rect, Text, Circle } from '@svgdotjs/svg.js';
 import { PianoElement, KeyEventHandler } from './PianoElement';
-import { INoteValue, NoteValue } from './Note';
+import { INoteValue, NoteValue, Accidetnal } from './Note';
 import { InstrumentSettings } from './InstrumentSettings';
 
 export class Key extends PianoElement {
@@ -89,10 +89,14 @@ export class Key extends PianoElement {
     this.container.backward();
   }
 
+  private accidentalToUnicode(accidental: Accidetnal) {
+    return accidental.toString().replace(/#/g, '♯').replace(/b/g, '♭');
+  }
+
   protected createLabel(color: string) {
     this._label = this.container.group();
     this._labelText = this._label
-      .text(`${this.displayNote.note}${this.displayNote.accidental ? this.displayNote.accidental : ""}`)
+      .text(`${this.displayNote.note}${this.displayNote.accidental ? this.accidentalToUnicode(this.displayNote.accidental) : ""}`)
       .fill(color)
       .font({
         family:   'Helvetica',
@@ -109,7 +113,7 @@ export class Key extends PianoElement {
 
   protected updateLabel() {
     if (this._labelText) {
-      this._labelText.text(`${this.displayNote.note}${this.displayNote.accidental ? this.displayNote.accidental : ""}`)
+      this._labelText.text(`${this.displayNote.note}${this.displayNote.accidental ? this.accidentalToUnicode(this.displayNote.accidental) : ""}`)
       this.layout();
     }
   }
