@@ -62,21 +62,27 @@ export class Key extends PianoElement {
     if (this._visual !== undefined) {
       this._visual.on('mousedown', this.handleInputDown);
       this._visual.on('mouseup', this.handleInputUp);
+      this._visual.on('mouseleave', this.handleInputUp);
 
       this._visual.on('touchstart', this.handleInputDown);
       this._visual.on('touchend', this.handleInputUp);
     }
   }
 
+  private isMouseDown = false; // separate from isPressed as that one is set externally
   private handleInputDown() {
+    this.isMouseDown = true;
     if (this.onKeyPress !== undefined) {
       this.onKeyPress(this.note);
     }
   }
 
   private handleInputUp() {
-    if (this.onKeyRelease !== undefined) {
-      this.onKeyRelease(this.note);
+    if (this.isMouseDown) {
+      this.isMouseDown = false;
+      if (this.onKeyRelease !== undefined) {
+        this.onKeyRelease(this.note);
+      }
     }
   }
 
