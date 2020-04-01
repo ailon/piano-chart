@@ -87,6 +87,7 @@ You pass configuration object as a second parameter to the `Instrument` construc
 - `keyDown(note: INoteValue | string)` - press a key;
 - `keyUp(note:  INoteValue | string)` - release a key;
 - `applySettings(settings: IInstrumentSettings)` - apply new settings (changes to start/end notes and octaves are not supported through this method - recreate the `Instrument` instead);
+- `rasterize(done: (dataUrl: string) => void, signature?: string))` (new in v.1.4) - creates a PNG screenshot of the current keyboard and calls the specified callback with the data URL that can be used as the `src` of a HTML image. If `signature` string is provided, it will be added at the bottom right corner of the screenshot.
 - `destroy()` - perform cleanup;
 
 ### Events

@@ -17,3 +17,10 @@ document.addEventListener("DOMContentLoaded", function () {
   piano.addKeyMouseDownListener((note) => { piano.keyDown(note) });
   piano.addKeyMouseUpListener((note) => { piano.keyUp(note) });
 });
+
+function takeScreenshot(signature) {
+  console.log('rasterizing...');
+  piano.rasterize((img) => {
+    document.getElementById('screenshotHolder').src = img;
+  }, signature);
+}

@@ -153,4 +153,53 @@ export class Instrument {
   private handleMouseKeyUp(note: INoteValue) {
     this.keyReleaseEventHandlers.forEach(handler => handler(note));
   }
+
+  public rasterize(
+    done: (dataUrl: string) => void, 
+    signature?: string
+  ) {
+    const canvas = document.createElement('canvas');
+
+    const tmpDiv = document.createElement('div');
+
+    const imgCopy = SVG().addTo(tmpDiv).svg(this.img.svg()).size(this.img.width(), this.img.height()); //clone;
+
+    if (signature) {
+      const sigBlock = imgCopy.root().group();
+      sigBlock.text(signature)
+        .fill('#888')
+        .font({
+          family:   'Helvetica',
+          size:     12,
+          anchor:   'start'
+        })
+        ;
+      imgCopy.height(imgCopy.height() + sigBlock.height() + 6)
+      sigBlock.translate(imgCopy.width() - sigBlock.width() - 6, imgCopy.height() - 6);
+    }
+
+    canvas.width = imgCopy.width();
+    canvas.height = imgCopy.height();
+
+    const data = imgCopy.svg();
+
+    const ctx = canvas.getContext("2d");
+    const DOMURL = window.URL;
+
+    const img = new Image(canvas.width, canvas.height);
+    img.setAttribute("crossOrigin", "anonymous");
+
+    const blob = new Blob([data], { type: "image/svg+xml" });
+
+    const url = DOMURL.createObjectURL(blob);
+
+    img.onload = () => {
+        ctx.drawImage(img, 0, 0);
+        DOMURL.revokeObjectURL(url);
+
+        done(canvas.toDataURL('image/png'));
+    };
+
+    img.src = url;
+  }  
 }

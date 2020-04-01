@@ -14,5 +14,10 @@
   <input type="text" onblur="piano.keyDown(event.target.value)" />
   Set start octave:
   <input type="text" onblur="piano.applySettings({ startOctave: event.target.value })" />
+
+  <input type="text" id="signatureText" />
+  <input type="button" onclick="takeScreenshot(document.getElementById('signatureText').value)" value="render" />
+
+  <img id="screenshotHolder" />
 </body>
 </html>
