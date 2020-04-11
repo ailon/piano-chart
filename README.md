@@ -2,6 +2,8 @@
 
 The purpose of `piano-chart` is to allow developers to include visual representation of musical notes on a piano keyboard.
 
+See it "in action" at [PianoShow.me](https://pianoshow.me).
+
 ## Installation
 
 ```
