@@ -1,5 +1,5 @@
 import { Key } from './Key';
-import { G, Rect } from '@svgdotjs/svg.js';
+import { G, Rect, Gradient, Color } from '@svgdotjs/svg.js';
 import { PianoData } from './PianoData';
 import { Note, INoteValue, NoteValue } from "./Note";
 import { KeyEventHandler } from './PianoElement';
@@ -31,16 +31,22 @@ export class WhiteKey extends Key {
   }
 
   public press(displayNote: INoteValue) {
-    var gradient = this.container.gradient('linear', function(add) {
-      add.stop(0, '#fff')
-      add.stop(1, '#e8e8e8')
-    });
-    gradient.attr({ x1: 0, y1: 0, x2: 0, y2: 1});
+    let keyFill: string | Gradient;
+
+    if (this.instrumentSettings.keyPressStyle === "subtle") {
+      keyFill = this.container.gradient('linear', function(add) {
+        add.stop(0, '#fff')
+        add.stop(1, '#e8e8e8')
+      });
+      keyFill.attr({ x1: 0, y1: 0, x2: 0, y2: 1});
+    } else {
+      keyFill = this.instrumentSettings.vividKeyPressColor;
+    }
 
     if (!this.isPressed) {
       super.press(displayNote);
 
-      this._visual?.fill(gradient).transform({
+      this._visual?.fill(keyFill as unknown).transform({
         origin: { x: this.width / 2, y: 0 },
         skewX: 0.3
       });

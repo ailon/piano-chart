@@ -1,6 +1,7 @@
 import { Note, INoteValue, NoteValue } from "./Note";
 
 export type NoteNameBehavior = "always" | "onpress" | "onhighlight" | "never";
+export type KeyPressStyle = "subtle" | "vivid";
 
 export interface IInstrumentSettings {
   startOctave?: number,
@@ -13,6 +14,8 @@ export interface IInstrumentSettings {
   specialHighlightedNotes?:  Array<INoteValue | string>;
   specialHighlightColor?: string;
   showOctaveNumbers?: boolean;
+  keyPressStyle?: KeyPressStyle;
+  vividKeyPressColor?: string;
 }
 
 export class InstrumentSettings {
@@ -26,6 +29,8 @@ export class InstrumentSettings {
   public specialHighlightedNotes: NoteValue[] = [];
   public specialHighlightColor: string = "#f00";
   public showOctaveNumbers: boolean = false;
+  public keyPressStyle: KeyPressStyle = "subtle";
+  public vividKeyPressColor: string = "#f33";
 
   private _reloadNeeded = false;
   public get reloadNeded(): boolean {
@@ -75,6 +80,12 @@ export class InstrumentSettings {
       }
       if (settings.showOctaveNumbers !== undefined) {
         this.showOctaveNumbers = settings.showOctaveNumbers;
+      }
+      if (settings.keyPressStyle !== undefined) {
+        this.keyPressStyle = settings.keyPressStyle;
+      }
+      if (settings.vividKeyPressColor !== undefined) {
+        this.vividKeyPressColor = settings.vividKeyPressColor;
       }
     }
   }

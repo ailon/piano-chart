@@ -1,5 +1,5 @@
 import { Key } from './Key';
-import { G, SVG } from '@svgdotjs/svg.js';
+import { G, SVG, Gradient, Color } from '@svgdotjs/svg.js';
 import { PianoData } from './PianoData';
 import { Note, INoteValue, NoteValue } from "./Note";
 import { WhiteKey } from './WhiteKey';
@@ -19,7 +19,11 @@ export class BlackKey extends Key {
 
   public create() {
     this._visual = this.container.rect(this.width, this.height)
-      .fill("#000");
+      .fill("#000")      
+      .stroke({
+        color: "#000",
+        width: 2
+      });
 
     this.createLabel("#fff");
     this.createHighlight(this.width / 8);
@@ -34,16 +38,25 @@ export class BlackKey extends Key {
   }
 
   public press(displayNote: INoteValue) {
-    var gradient = this.container.gradient('linear', function(add) {
-      add.stop(0, '#000')
-      add.stop(1, '#555')
-    });
-    gradient.attr({ x1: 0, y1: 0, x2: 0, y2: 1});
+    let keyFill: Color | Gradient;
+
+    if (this.instrumentSettings.keyPressStyle === "subtle") {
+      keyFill = this.container.gradient('linear', function(add) {
+        add.stop(0, '#000')
+        add.stop(1, '#555')
+      });
+      keyFill.attr({ x1: 0, y1: 0, x2: 0, y2: 1});
+    } else {
+      keyFill = new Color(this.instrumentSettings.vividKeyPressColor);
+      keyFill = keyFill.hsl();
+      // slightly darker shade
+      keyFill.l /= 1.2;
+    }
 
     if (!this.isPressed) {
       super.press(displayNote);
 
-      this._visual?.fill(gradient);
+      this._visual?.fill(keyFill as unknown);
     }
   }
 

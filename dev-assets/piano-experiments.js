@@ -7,7 +7,9 @@ document.addEventListener("DOMContentLoaded", function () {
     endOctave: 5,
     highlightedNotes: ["D", "E", "F#", "G", "Ab", "B", "C#"],
     specialHighlightedNotes: [{ note: "D", accidental: 'bb' }],
-    // showOctaveNumbers: true
+    // showOctaveNumbers: true,
+    keyPressStyle: "vivid",
+    //vividKeyPressColor: "#f33"
   });
   piano.create();
   piano.keyDown("D4");
