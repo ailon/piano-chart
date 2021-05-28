@@ -1,15 +1,15 @@
 export type Note = "C" | "D" | "E" | "F" | "G" | "A" | "B";
-export type Accidetnal = "#" | "b" | "##" | "bb";
+export type Accidental = "#" | "b" | "##" | "bb";
 
 export interface INoteValue {
   note: Note;
-  accidental?: Accidetnal;
+  accidental?: Accidental;
   octave?: number;
 }
 
 export class NoteValue implements INoteValue {
   public note: Note;  
-  public accidental?: Accidetnal;
+  public accidental?: Accidental;
   public octave?: number;
 
   constructor(note: INoteValue | string) {
@@ -20,9 +20,9 @@ export class NoteValue implements INoteValue {
           let octave = note.substr(1);
           if (["#", "b"].indexOf(note[1]) > -1) {
             if (note.length > 2 && note[1] === note[2]) {
-              this.accidental = note.substr(1, 2) as Accidetnal;
+              this.accidental = note.substr(1, 2) as Accidental;
             } else {
-              this.accidental = note[1] as Accidetnal;
+              this.accidental = note[1] as Accidental;
             }
             octave = note.substr(this.accidental.toString().length + 1);
           }

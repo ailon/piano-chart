@@ -1,6 +1,6 @@
 import { G, Rect, Text, Circle } from '@svgdotjs/svg.js';
 import { PianoElement, KeyEventHandler } from './PianoElement';
-import { INoteValue, NoteValue, Accidetnal } from './Note';
+import { INoteValue, NoteValue, Accidental } from './Note';
 import { InstrumentSettings } from './InstrumentSettings';
 
 export class Key extends PianoElement {
@@ -106,7 +106,7 @@ export class Key extends PianoElement {
     this.container.backward();
   }
 
-  private accidentalToUnicode(accidental: Accidetnal) {
+  private accidentalToUnicode(accidental: Accidental) {
     return accidental.toString().replace(/#/g, '♯').replace(/b/g, '♭');
   }
 

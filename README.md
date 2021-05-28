@@ -105,7 +105,7 @@ All handlers receive an argument of `INoteValue` type:
 ```js
 interface INoteValue {
   note: Note;
-  accidental?: Accidetnal;
+  accidental?: Accidental;
   octave?: number;
 }
 ```
